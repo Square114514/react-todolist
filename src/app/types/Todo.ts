@@ -1,5 +1,5 @@
 export default interface Todo {
-  id: number;
+  id: string; // 从 Date 改为 uuid
   text: string;
   completed: boolean;
   createAt: number;

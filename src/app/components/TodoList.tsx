@@ -3,43 +3,37 @@ import { useState } from "react";
 import AddTodo from "./AddTodo";
 import Todo from "../types/Todo";
 import List from "./List";
-
-let nextId: number = 1;
+import { v4 as uuidv4 } from "uuid";
 
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  function addTodo(text: string) {
+  const addTodo = (text: string) => {
     const newTodo: Todo = {
-      id: nextId++,
-      text: text,
+      id: uuidv4(), //从 Date 改为 uuid
+      text,
       completed: false,
       createAt: Date.now(),
     };
 
-    setTodos([...todos, newTodo]);
-  }
+    setTodos((prev) => [...prev, newTodo]);
+  };
 
-  function deleteTodo(id: number) {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  }
+  const deleteTodo = (id: string) => {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id)); // 从 function 改为 const
+  };
 
-  function toggleTodo(id: number) {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id
-          ? {
-              ...todo,
-              completed: !todo.completed,
-            }
-          : todo,
+  const toggleTodo = (id: string) => {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
       ),
     );
-  }
+  };
 
   return (
-    <div>
-      <h1>TodoList</h1>
+    <div className="w-full max-w-2xl bg-amber-50 rounded-2xl shadow-xl p-8">
+      <h1 className="text-5xl font-bold mb-4 text-emerald-900">TodoList</h1>
       <AddTodo onAdd={addTodo} />
       <List todos={todos} onDelete={deleteTodo} onToggle={toggleTodo} />
     </div>
