@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddTodo from "./AddTodo";
 import Todo from "../types/Todo";
 import List from "./List";
@@ -7,7 +7,14 @@ import { v4 as uuidv4 } from "uuid";
 import TodoStats from "./TodoStats";
 
 export default function TodoList() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>(() => {
+    const saved = localStorage.getItem("todo_list_data"); // 禁用了 SSR，可以直接读取 localStorage，不会有水合错误
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("todo_list_data", JSON.stringify(todos));
+  }, [todos]);
 
   const addTodo = (text: string) => {
     const newTodo: Todo = {
