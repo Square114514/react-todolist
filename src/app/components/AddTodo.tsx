@@ -26,9 +26,7 @@ export default function AddTodo({ onAdd }: AddProps) {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSubmit();
-          } // 增加按下 Enter 也可 add
+          if (e.key === "Enter") handleSubmit(); // 增加按下 Enter 也可 add
         }}
         placeholder="input your todos"
       />
@@ -41,5 +39,3 @@ export default function AddTodo({ onAdd }: AddProps) {
     </div>
   );
 }
-
-// 加入按enter实现add

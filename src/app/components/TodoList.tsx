@@ -24,6 +24,12 @@ export default function TodoList() {
     setTodos((prev) => prev.filter((todo) => todo.id !== id)); // 从 function 改为 const
   };
 
+  const editTodo = (id: string, newText: string) => {
+    setTodos((prev) =>
+      prev.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo)),
+    );
+  };
+
   const toggleTodo = (id: string) => {
     setTodos((prev) =>
       prev.map((todo) =>
@@ -37,7 +43,12 @@ export default function TodoList() {
       <h1 className="text-5xl font-bold mb-4 text-emerald-900">TodoList</h1>
       <AddTodo onAdd={addTodo} />
       <TodoStats todos={todos} />
-      <List todos={todos} onDelete={deleteTodo} onToggle={toggleTodo} />
+      <List
+        todos={todos}
+        onDelete={deleteTodo}
+        onEdit={editTodo}
+        onToggle={toggleTodo}
+      />
     </div>
   );
 }
