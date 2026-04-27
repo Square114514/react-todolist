@@ -19,6 +19,16 @@
   }
 } */
 
+@layer base{
+  button{
+    @apply cursor-pointer;
+  }
+
+  input[type="checkbox"]{
+    @apply cursor-pointer;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
