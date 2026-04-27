@@ -5,9 +5,9 @@ export default function TodoStats({ todos }: { todos: Todo[] }) {
   const completed = todos.filter((todo) => todo.completed === true).length;
 
   return (
-    <div className="mb-6">
+    <div className="mb-4">
       <span className="text-sm text-gray-600">
-        Total: {total} | Completed: {completed}
+        Completed: {completed} | Total: {total}
       </span>
     </div>
   );

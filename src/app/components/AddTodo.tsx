@@ -19,9 +19,9 @@ export default function AddTodo({ onAdd }: AddProps) {
   };
 
   return (
-    <div className="flex items-center mb-8 gap-8">
+    <div className="flex items-center mb-2 gap-8">
       <input
-        className="flex-1 px-4 py-3 border-b-2 min-w-80 h-9 border-emerald-700 focus:outline-none focus:border-emerald-500 focus:shadow-xl transition"
+        className="flex-1 px-4 py-3 border-b-2 min-w-80 h-9 border-emerald-700 focus:outline-none focus:border-emerald-600 focus:shadow-xl hover:border-b-emerald-500 transition"
         type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
@@ -31,7 +31,7 @@ export default function AddTodo({ onAdd }: AddProps) {
         placeholder="input your todos"
       />
       <button
-        className="bg-emerald-600 text-white px-5 py-3 rounded-xl hover:bg-emerald-700 transition"
+        className="bg-emerald-600 text-white text-lg px-5 py-2 rounded-xl hover:bg-emerald-700 hover:shadow-lg transition"
         onClick={handleSubmit}
       >
         Add Todo

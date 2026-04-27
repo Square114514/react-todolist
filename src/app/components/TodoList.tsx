@@ -1,15 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
 import AddTodo from "./AddTodo";
-import Todo from "../types/Todo";
+import Todo, { FilterType } from "../types/Todo";
 import List from "./List";
 import { v4 as uuidv4 } from "uuid";
 import TodoStats from "./TodoStats";
+import FilterBar from "./FilterBar";
 
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>(() => {
     const saved = localStorage.getItem("todo_list_data"); // 禁用了 SSR，可以直接读取 localStorage，不会有水合错误
     return saved ? JSON.parse(saved) : [];
+  });
+  const [filter, setFilter] = useState<FilterType>("all");
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "active") return !todo.completed;
+    if (filter === "completed") return todo.completed;
+    return true;
   });
 
   useEffect(() => {
@@ -45,13 +53,18 @@ export default function TodoList() {
     );
   };
 
+  const changeFilter = (newFilter: FilterType) => {
+    setFilter(newFilter);
+  };
+
   return (
     <div className="w-full max-w-2xl bg-amber-50 rounded-2xl shadow-xl p-8">
       <h1 className="text-5xl font-bold mb-4 text-emerald-900">TodoList</h1>
       <AddTodo onAdd={addTodo} />
       <TodoStats todos={todos} />
+      <FilterBar currentFilter={filter} onFilterChange={changeFilter} />
       <List
-        todos={todos}
+        todos={filteredTodos}
         onDelete={deleteTodo}
         onEdit={editTodo}
         onToggle={toggleTodo}

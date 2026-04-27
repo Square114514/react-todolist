@@ -27,7 +27,7 @@ export default function TodoItem({
   };
 
   return (
-    <li className="flex mb-3 items-center justify-between bg-white rounded-lg shadow-sm p-3">
+    <li className="flex mb-3 items-center justify-between bg-white rounded-lg shadow-sm p-3 hover:shadow-lg transition">
       <div>
         <input
           type="checkbox"
@@ -36,7 +36,7 @@ export default function TodoItem({
         />
         {isEditing ? (
           <input
-            className="flex-1 px-4 py-3 border-b-2 min-w-80 h-9 border-gray-800 focus:outline-none focus:border-gray-400 focus:shadow-md transition"
+            className="flex-1 px-4 py-3 border-b-2 min-w-80 h-8 border-gray-800 focus:outline-none focus:border-gray-400 focus:shadow-md transition"
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
             onKeyDown={(e) => {
