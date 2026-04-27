@@ -57,11 +57,15 @@ export default function TodoList() {
     setFilter(newFilter);
   };
 
+  const clearCompleted = () => {
+    setTodos((prev) => prev.filter((todo) => !todo.completed));
+  };
+
   return (
     <div className="w-full max-w-2xl bg-amber-50 rounded-2xl shadow-xl p-8">
       <h1 className="text-5xl font-bold mb-4 text-emerald-900">TodoList</h1>
       <AddTodo onAdd={addTodo} />
-      <TodoStats todos={todos} />
+      <TodoStats todos={todos} onClear={clearCompleted} />
       <FilterBar currentFilter={filter} onFilterChange={changeFilter} />
       <List
         todos={filteredTodos}

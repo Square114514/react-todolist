@@ -52,7 +52,7 @@ export default function TodoItem({
             }`}
           >
             {" "}
-            {todo.text}{" "}
+            {todo.text}
           </span>
         )}
       </div>
