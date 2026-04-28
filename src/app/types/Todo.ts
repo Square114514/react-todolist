@@ -2,7 +2,7 @@ export default interface Todo {
   id: string; // 从 Date 改为 uuid
   text: string;
   completed: boolean;
-  createAt: number;
+  createdAt: number;
 }
 
 export type FilterType = 'all' | 'active' | 'completed';

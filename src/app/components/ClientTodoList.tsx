@@ -11,7 +11,7 @@ const TodoList = dynamic(() => import("./TodoList"), {
       <h1 className="text-5xl font-bold mb-4 text-emerald-900">TodoList</h1>
       <div className="flex items-center mb-2 gap-8">
         <input
-          className="flex-1 px-4 py-3 border-b-2 min-w-80 h-9 border-emerald-700 focus:outline-none focus:border-emerald-600 focus:shadow-xl hover:border-b-emerald-500 transition"
+          className="flex-1 px-4 py-3 border-b-2 w-full h-9 border-emerald-700 focus:outline-none focus:border-emerald-600 focus:shadow-xl hover:border-b-emerald-500 transition"
           type="text"
           placeholder="input your todos"
         />

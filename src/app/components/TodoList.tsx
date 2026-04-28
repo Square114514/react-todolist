@@ -21,27 +21,26 @@ export default function TodoList() {
   const [sortOrder, setSortOrder] = useState<SortOrder>("latest");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredTodos = todos.filter((todo) => {
-    if (filter === "active") return !todo.completed;
-    if (filter === "completed") return todo.completed;
-    return true;
-  });
-
-  const proceededTodos = filteredTodos.sort((a, b) => {
-    if (sortOrder === "oldest") return a.createAt - b.createAt;
-    else return b.createAt - a.createAt;
-  });
-
-  const searchedTodos = proceededTodos.filter((todo) => {
-    return todo.text.toLowerCase().includes(searchQuery);
-  });
+  const proceededTodos = todos // 优化三个链式调用的顺序（原本filter、sort、search
+    .filter((todo) => {
+      if (filter === "active") return !todo.completed;
+      if (filter === "completed") return todo.completed;
+      return true;
+    })
+    .filter((todo) => {
+      return todo.text.toLowerCase().includes(searchQuery);
+    })
+    .sort((a, b) => {
+      if (sortOrder === "oldest") return a.createdAt - b.createdAt;
+      else return b.createdAt - a.createdAt;
+    });
 
   const addTodo = (text: string) => {
     const newTodo: Todo = {
       id: uuidv4(), //从 Date 改为 uuid
       text,
       completed: false,
-      createAt: Date.now(),
+      createdAt: Date.now(),
     };
 
     setTodos((prev) => [newTodo, ...prev]);
@@ -94,7 +93,7 @@ export default function TodoList() {
         onSearch={searchTodo}
       />
       <List
-        todos={searchedTodos}
+        todos={proceededTodos}
         onDelete={deleteTodo}
         onEdit={editTodo}
         onToggle={toggleTodo}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FilterType, SortOrder } from "../types/Todo";
 
 interface FilterProps {
@@ -22,9 +22,21 @@ export default function FilterBar({
   const handleSubmit = () => {
     const text = inputValue.trim();
 
-    if (!text) return;
+    if (!text) onSearch(""); // fix: 为空时不再筛选
 
     onSearch(text);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleSubmit();
+    }, 300);
+
+    return () => clearTimeout(timer);
+  });
+
+  const handleClear = () => {
+    onSearch("");
     setInputValue("");
   };
 
@@ -53,7 +65,7 @@ export default function FilterBar({
         {currentSort === "latest" ? "latest" : "oldest"}
       </button>
 
-      <div className="flex ml-auto gap-2 bg-gray-50 rounded-lg px-2  shadow-md">
+      <div className="flex ml-auto gap-2 bg-gray-50 rounded-lg px-2 pt-1 shadow-md">
         <input
           className="border-b-2 border-emerald-700 focus:outline-none focus:border-emerald-600 focus:shadow-xl hover:border-b-emerald-500 transition"
           type="text"
@@ -61,14 +73,14 @@ export default function FilterBar({
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") handleSubmit();
+            if (e.key === "Escape") handleClear();
           }}
         />
         <button
-          className="bg-gray-500 px-2 py-0.5 text-white rounded-lg  hover:bg-gray-600 transition"
-          onClick={() => handleSubmit()}
+          className=" px-2 text-gray-600 rounded-lg  hover:bg-gray-300 transition"
+          onClick={handleClear}
         >
-          Search
+          Clear
         </button>
       </div>
     </div>
