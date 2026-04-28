@@ -10,7 +10,13 @@ interface ListProps {
 
 export default function List({ todos, onDelete, onEdit, onToggle }: ListProps) {
   if (todos.length === 0) {
-    return <p className="text-center text-gray-400 mt-6">No todos~</p>;
+    return (
+      <p className="text-center text-gray-400 mt-6">
+        No todos~
+        <br />
+        Try changing filters or add a new task.
+      </p>
+    );
   }
 
   return (

@@ -22,7 +22,10 @@ export default function FilterBar({
   const handleSubmit = () => {
     const text = inputValue.trim();
 
-    if (!text) onSearch(""); // fix: 为空时不再筛选
+    if (!text) {
+      onSearch("");
+      return;
+    } // fix: 为空时不再筛选
 
     onSearch(text);
   };
@@ -45,7 +48,7 @@ export default function FilterBar({
       <div>
         {filters.map((filter) => (
           <button
-            className={`border-b-2 px-4 hover:border-b-emerald-500 transition ${
+            className={`border-b-2 px-4 hover:border-b-emerald-500 transition dark:text-gray-300 ${
               currentFilter === filter
                 ? "border-b-emerald-600 border-b-3 shadow-lg"
                 : ""
@@ -59,13 +62,13 @@ export default function FilterBar({
       </div>
 
       <button
-        className="hover:text-emerald-700 transition"
+        className="hover:text-emerald-700 transition dark:text-gray-300"
         onClick={onSortChange}
       >
         {currentSort === "latest" ? "latest" : "oldest"}
       </button>
 
-      <div className="flex ml-auto gap-2 bg-gray-50 rounded-lg px-2 pt-1 shadow-md">
+      <div className="flex ml-auto gap-2 bg-gray-50 rounded-lg px-2 pt-1 shadow-md dark:bg-gray-800 dark:text-white dark:border-gray-500">
         <input
           className="border-b-2 border-emerald-700 focus:outline-none focus:border-emerald-600 focus:shadow-xl hover:border-b-emerald-500 transition"
           type="text"
@@ -77,7 +80,7 @@ export default function FilterBar({
           }}
         />
         <button
-          className=" px-2 text-gray-600 rounded-lg  hover:bg-gray-300 transition"
+          className=" px-2 text-gray-600 rounded-lg  hover:bg-gray-300 transition dark:text-gray-400"
           onClick={handleClear}
         >
           Clear

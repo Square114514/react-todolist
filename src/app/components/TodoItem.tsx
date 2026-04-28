@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import Todo from "../types/Todo";
 
 interface ItemProps {
@@ -8,12 +8,7 @@ interface ItemProps {
   onToggle: (id: string) => void;
 }
 
-export default function TodoItem({
-  todo,
-  onDelete,
-  onEdit,
-  onToggle,
-}: ItemProps) {
+function TodoItem({ todo, onDelete, onEdit, onToggle }: ItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
 
@@ -27,7 +22,7 @@ export default function TodoItem({
   };
 
   return (
-    <li className="flex mb-3 items-center justify-between bg-white rounded-lg shadow-sm p-3 hover:shadow-lg transition">
+    <li className="flex mb-3 items-center justify-between bg-white rounded-lg shadow-sm p-3 hover:shadow-lg transition dark:bg-gray-800">
       <div>
         <input
           type="checkbox"
@@ -36,19 +31,20 @@ export default function TodoItem({
         />
         {isEditing ? (
           <input
-            className="flex-1 px-4 py-3 border-b-2 min-w-80 h-8 border-gray-800 focus:outline-none focus:border-gray-400 focus:shadow-md transition"
+            className="dark:text-gray-300 dark:border-b-gray-100 flex-1 px-4 py-3 border-b-2 min-w-80 h-8 border-gray-800 focus:outline-none focus:border-gray-400 focus:shadow-md transition"
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") handleEdit();
             }}
+            autoFocus
           ></input>
         ) : (
           <span
             className={`text-lg ${
               todo.completed
                 ? "line-through text-gray-400"
-                : "text-gray-800 font-medium"
+                : "text-gray-800 font-medium dark:text-gray-200"
             }`}
           >
             {" "}
@@ -87,3 +83,5 @@ export default function TodoItem({
     </li>
   );
 }
+
+export default memo(TodoItem); // 避免无意义重渲染

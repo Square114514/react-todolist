@@ -1,30 +1,22 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-/* @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-} */
+.dark {
+  --background: #121212;
+  --foreground: #ededed;
+}
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #121212;
-    --foreground: #ededed;
-  }
-} */
-
-@layer base{
-  button{
+@layer base {
+  button {
     @apply cursor-pointer;
   }
 
-  input[type="checkbox"]{
+  input[type="checkbox"] {
     @apply cursor-pointer;
   }
 }
