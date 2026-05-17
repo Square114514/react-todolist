@@ -36,6 +36,10 @@ function TodoItem({ todo, onDelete, onEdit, onToggle }: ItemProps) {
             onChange={(e) => setEditText(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") handleEdit();
+              if (e.key === "Escape") {
+                setIsEditing(false);
+                setEditText(todo.text);
+              } 
             }}
             autoFocus
           ></input>

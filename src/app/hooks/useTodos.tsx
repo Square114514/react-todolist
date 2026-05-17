@@ -4,6 +4,7 @@ import { useCallback } from "react";
 import useLocalStorage from "./useLocalStorage";
 import Todo from "../types/Todo";
 import { v4 as uuidv4 } from "uuid";
+import toast from "react-hot-toast";
 
 export default function useTodos() {
   const [todos, setTodos] = useLocalStorage<Todo[]>("todo_list_data", []);
@@ -18,6 +19,7 @@ export default function useTodos() {
       };
 
       setTodos((prev) => [newTodo, ...prev]);
+      toast.success("Todo added");
     },
     [setTodos],
   );
@@ -25,6 +27,7 @@ export default function useTodos() {
   const deleteTodo = useCallback(
     (id: string) => {
       setTodos((prev) => prev.filter((todo) => todo.id !== id)); // 从 function 改为 const
+      toast.success("Todo deleted");
     },
     [setTodos],
   );
