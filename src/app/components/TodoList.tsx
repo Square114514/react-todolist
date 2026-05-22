@@ -9,7 +9,7 @@ import useTodos from "../hooks/useTodos";
 import { FilterType, SortOrder } from "../types/Todo";
 
 export default function TodoList() {
-  const { todos, setTodos, addTodo, deleteTodo, editTodo, toggleTodo } =
+  const { todos, addTodo, deleteTodo, editTodo, toggleTodo, clearCompleted } =
     useTodos();
 
   const [filter, setFilter] = useState<FilterType>("all");
@@ -36,12 +36,7 @@ export default function TodoList() {
     <div className="w-full max-w-2xl bg-amber-50 rounded-2xl shadow-xl p-8 dark:bg-gray-900 transition">
       <Title />
       <AddTodo onAdd={addTodo} />
-      <TodoStats
-        todos={todos}
-        onClear={() =>
-          setTodos((prev) => prev.filter((todo) => !todo.completed))
-        }
-      />
+      <TodoStats todos={todos} onClear={clearCompleted} />
       <FilterBar
         currentFilter={filter}
         onFilterChange={(newFilter) => setFilter(newFilter)}

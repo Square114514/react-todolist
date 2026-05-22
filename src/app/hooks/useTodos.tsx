@@ -1,65 +1,67 @@
 "use client";
 
-import { useCallback } from "react";
-import useLocalStorage from "./useLocalStorage";
-import Todo from "../types/Todo";
-import { v4 as uuidv4 } from "uuid";
+import { useCallback, useEffect, useReducer } from "react";
 import toast from "react-hot-toast";
+import { todosReducer } from "../reducer/todosReducer";
+import Todo from "../types/Todo";
+
+const STORAGE_KEY = "todo_list_data";
+
+function readTodosFromStorage(): Todo[] {
+  try {
+    const item = localStorage.getItem(STORAGE_KEY);
+    return item ? JSON.parse(item) : [];
+  } catch {
+    return [];
+  }
+}
 
 export default function useTodos() {
-  const [todos, setTodos] = useLocalStorage<Todo[]>("todo_list_data", []);
-
-  const addTodo = useCallback(
-    (text: string) => {
-      const newTodo: Todo = {
-        id: uuidv4(), //从 Date 改为 uuid
-        text,
-        completed: false,
-        createdAt: Date.now(),
-      };
-
-      setTodos((prev) => [newTodo, ...prev]);
-      toast.success("Todo added");
-    },
-    [setTodos],
+  const [todos, dispatch] = useReducer(
+    todosReducer,
+    undefined, // initialArg：传给 init 的种子
+    () => readTodosFromStorage(), // init：惰性初始化函数
   );
 
-  const deleteTodo = useCallback(
-    (id: string) => {
-      setTodos((prev) => prev.filter((todo) => todo.id !== id)); // 从 function 改为 const
-      toast.success("Todo deleted");
-    },
-    [setTodos],
-  );
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    } catch {
+      console.error("Failed to save todo_list_data");
+    }
+  }, [todos]);
 
-  const editTodo = useCallback(
-    (id: string, newText: string) => {
-      setTodos((prev) =>
-        prev.map((todo) =>
-          todo.id === id ? { ...todo, text: newText } : todo,
-        ),
-      );
-    },
-    [setTodos],
-  );
+  const addTodo = useCallback((text: string) => {
+    dispatch({ type: "ADD", payload: { text } });
+    toast.success("Todo added");
+  }, []);
 
-  const toggleTodo = useCallback(
-    (id: string) => {
-      setTodos((prev) =>
-        prev.map((todo) =>
-          todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-        ),
-      );
-    },
-    [setTodos],
-  );
+  const deleteTodo = useCallback((id: string) => {
+    dispatch({ type: "DELETE", payload: { id } });
+    toast.success("Todo deleted");
+  }, []);
+
+  const editTodo = useCallback((id: string, newText: string) => {
+    dispatch({ type: "EDIT", payload: { id, text: newText } });
+    toast.success("Todo edited");
+  }, []);
+
+  const toggleTodo = useCallback((id: string) => {
+    dispatch({ type: "TOGGLE", payload: { id } });
+    toast.success("Todo toggled");
+  }, []);
+
+  const clearCompleted = useCallback(() => {
+    dispatch({ type: "CLEAR_COMPLETED" });
+    toast.success("Completed todos cleared");
+  }, []);
 
   return {
     todos,
-    setTodos,
     addTodo,
     deleteTodo,
     editTodo,
     toggleTodo,
+    clearCompleted,
   };
 }
