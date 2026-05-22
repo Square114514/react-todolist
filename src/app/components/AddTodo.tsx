@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useTodosContext } from "../context/TodosContext";
 
-export default function AddTodo() {
-  const { addTodo } = useTodosContext();
+interface AddProps {
+  onAdd: (text: string) => void;
+}
+
+export default function AddTodo({ onAdd }: AddProps) {
   const [inputValue, setInputValue] = useState("");
 
   const handleSubmit = () => {
@@ -12,7 +14,7 @@ export default function AddTodo() {
 
     if (!text) return;
 
-    addTodo(text);
+    onAdd(text);
     setInputValue("");
   };
 

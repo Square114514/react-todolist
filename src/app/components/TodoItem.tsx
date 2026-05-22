@@ -1,13 +1,14 @@
 import { memo, useState } from "react";
 import Todo from "../types/Todo";
-import { useTodosContext } from "../context/TodosContext";
 
 interface ItemProps {
   todo: Todo;
+  onDelete: (id: string) => void;
+  onEdit: (id: string, newText: string) => void;
+  onToggle: (id: string) => void;
 }
 
-function TodoItem({ todo }: ItemProps) {
-  const { deleteTodo, editTodo, toggleTodo } = useTodosContext();
+function TodoItem({ todo, onDelete, onEdit, onToggle }: ItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
 
@@ -16,7 +17,7 @@ function TodoItem({ todo }: ItemProps) {
 
     if (!newText) return;
 
-    editTodo(todo.id, newText);
+    onEdit(todo.id, newText);
     setIsEditing(false);
   };
 
@@ -26,7 +27,7 @@ function TodoItem({ todo }: ItemProps) {
         <input
           type="checkbox"
           checked={todo.completed}
-          onChange={() => toggleTodo(todo.id)}
+          onChange={() => onToggle(todo.id)}
         />
         {isEditing ? (
           <input
@@ -38,7 +39,7 @@ function TodoItem({ todo }: ItemProps) {
               if (e.key === "Escape") {
                 setIsEditing(false);
                 setEditText(todo.text);
-              }
+              } 
             }}
             autoFocus
           ></input>
@@ -78,7 +79,7 @@ function TodoItem({ todo }: ItemProps) {
 
         <button
           className="bg-amber-500 text-white rounded-lg px-3 py-1 hover:bg-amber-600 transition"
-          onClick={() => deleteTodo(todo.id)}
+          onClick={() => onDelete(todo.id)}
         >
           Delete
         </button>

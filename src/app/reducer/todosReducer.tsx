@@ -1,43 +1,43 @@
 import Todo from "../types/Todo";
-import { createTodoFromAddPayload, TodoAction } from "../types/TodoActions";
+import { TodoAction } from "../types/TodoActions";
+import { v4 as uuidv4 } from "uuid";
 
-export default function todosReducer(
-  state: Todo[],
-  action: TodoAction,
-): Todo[] {
+export function todosReducer(state: Todo[], action: TodoAction): Todo[] {
   switch (action.type) {
     case "ADD": {
-      const newTodo: Todo = createTodoFromAddPayload(action.payload);
+      const newTodo: Todo = {
+        id: uuidv4(),
+        text: action.payload.text,
+        completed: false,
+        createdAt: Date.now(),
+      };
       return [newTodo, ...state];
     }
 
-    case "DELETE": {
+    case "DELETE":
       return state.filter((todo) => todo.id !== action.payload.id);
-    }
 
-    case "EDIT": {
+    case "EDIT":
       return state.map((todo) =>
         todo.id === action.payload.id
           ? { ...todo, text: action.payload.text }
           : todo,
       );
-    }
 
-    case "TOGGLE": {
+    case "TOGGLE":
       return state.map((todo) =>
         todo.id === action.payload.id
           ? { ...todo, completed: !todo.completed }
           : todo,
       );
-    }
 
-    case "CLEAR_COMPLETED": {
+    case "CLEAR_COMPLETED":
       return state.filter((todo) => !todo.completed);
-    }
 
-    default: {
-      const _exhaustive: never = action; // 把 action 赋给一个类型为 never 的变量: 以后若在 TodoAction 里加了新 type 却忘了写分支，会报错
+    case "SET_TODOS":
+      return action.payload.todos;
+
+    default:
       return state;
-    }
   }
 }
