@@ -1,11 +1,7 @@
-import Todo from "../types/Todo";
+import { useTodosContext } from "../context/TodosContext";
 
-interface StatsProps {
-  todos: Todo[];
-  onClear: () => void;
-}
-
-export default function TodoStats({ todos, onClear }: StatsProps) {
+export default function TodoStats() {
+  const { todos, clearCompleted } = useTodosContext();
   const total = todos.length;
   const completed = todos.filter((todo) => todo.completed === true).length;
 
@@ -18,7 +14,7 @@ export default function TodoStats({ todos, onClear }: StatsProps) {
       {completed > 0 ? (
         <button
           className="text-sm text-gray-600 hover:text-amber-600"
-          onClick={onClear}
+          onClick={clearCompleted}
         >
           Clear completed
         </button>
