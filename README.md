@@ -23,3 +23,4 @@
 # 解决（taobi）的问题
 
 - 禁用 SSR 避免 Hydration 问题
+- 使用 useReducer 解决分散的逻辑

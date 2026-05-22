@@ -5,12 +5,11 @@ import List from "./List";
 import TodoStats from "./TodoStats";
 import FilterBar from "./FilterBar";
 import Title from "./Title";
-import useTodos from "../hooks/useTodos";
 import { FilterType, SortOrder } from "../types/Todo";
+import { useTodosContext } from "../context/TodosContext";
 
 export default function TodoList() {
-  const { todos, addTodo, deleteTodo, editTodo, toggleTodo, clearCompleted } =
-    useTodos();
+  const { todos } = useTodosContext();
 
   const [filter, setFilter] = useState<FilterType>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("latest");
@@ -35,8 +34,8 @@ export default function TodoList() {
   return (
     <div className="w-full max-w-2xl bg-amber-50 rounded-2xl shadow-xl p-8 dark:bg-gray-900 transition">
       <Title />
-      <AddTodo onAdd={addTodo} />
-      <TodoStats todos={todos} onClear={clearCompleted} />
+      <AddTodo />
+      <TodoStats />
       <FilterBar
         currentFilter={filter}
         onFilterChange={(newFilter) => setFilter(newFilter)}
@@ -46,12 +45,7 @@ export default function TodoList() {
         }
         onSearch={(searchText) => setSearchQuery(searchText.toLowerCase())}
       />
-      <List
-        todos={proceededTodos}
-        onDelete={deleteTodo}
-        onEdit={editTodo}
-        onToggle={toggleTodo}
-      />
+      <List todos={proceededTodos} />
     </div>
   );
 }
