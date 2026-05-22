@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { TodosProvider } from "../context/TodosContext";
 
 const TodoList = dynamic(() => import("./TodoList"), {
   ssr: false,
@@ -24,5 +25,9 @@ const TodoList = dynamic(() => import("./TodoList"), {
 });
 
 export default function ClientTodoList() {
-  return <TodoList />;
+  return (
+    <TodosProvider>
+      <TodoList />
+    </TodosProvider>
+  );
 }
