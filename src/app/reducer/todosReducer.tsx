@@ -33,11 +33,5 @@ export function todosReducer(state: Todo[], action: TodoAction): Todo[] {
 
     case "CLEAR_COMPLETED":
       return state.filter((todo) => !todo.completed);
-
-    case "SET_TODOS":
-      return action.payload.todos;
-
-    default:
-      return state;
   }
 }
