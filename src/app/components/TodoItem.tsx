@@ -62,9 +62,10 @@ function TodoItem({ todo }: ItemProps) {
             </select>
           </div>
         ) : (
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1 flex flex-wrap items-center gap-x-2 gap-y-1">
             <span
-              className={`text-lg mx-2 ${
+              title={todo.text}
+              className={`min-w-0 wrap-break-word text-lg ${
                 todo.completed
                   ? "line-through text-gray-400"
                   : "text-gray-800 font-medium dark:text-gray-200"
@@ -73,7 +74,7 @@ function TodoItem({ todo }: ItemProps) {
               {todo.text}
             </span>
             <span
-              className={` text-xs px-2 py-0.5 rounded-full ${
+              className={` text-xs px-2 py-0.5 rounded-full shrink-0 ${
                 priority === "high"
                   ? "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
                   : priority === "medium"
@@ -81,7 +82,7 @@ function TodoItem({ todo }: ItemProps) {
                     : "bg-gray-100 text-gray-600 dark:bg-gray-900 dark:text-gray-300"
               }`}
             >
-              {priority}
+              {priority ?? "medium"}
             </span>
           </div>
         )}

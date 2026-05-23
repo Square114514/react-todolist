@@ -17,7 +17,7 @@ export default function List({ todos }: ListProps) {
   }
 
   return (
-    <ul>
+    <ul className="min-w-0 overflow-hidden">
       {todos.map((todo) => (
         <TodoItem key={todo.id} todo={todo} />
       ))}
