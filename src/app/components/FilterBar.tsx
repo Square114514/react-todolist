@@ -32,11 +32,11 @@ export default function FilterBar({
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      handleSubmit();
+      onSearch(inputValue.trim().toLowerCase());
     }, 300);
 
     return () => clearTimeout(timer);
-  });
+  }, [inputValue, onSearch]);
 
   const handleClear = () => {
     onSearch("");
@@ -68,9 +68,9 @@ export default function FilterBar({
         {currentSort === "latest" ? "latest" : "oldest"}
       </button>
 
-      <div className="flex ml-auto gap-2 bg-gray-50 rounded-lg px-2 pt-1 shadow-md dark:bg-gray-800 dark:text-white dark:border-gray-500">
+      <div className="flex ml-auto gap-2 bg-gray-50 rounded-lg px-2 pt-1 shadow-md dark:bg-gray-800 dark:border-gray-500">
         <input
-          className="border-b-2 border-emerald-700 focus:outline-none focus:border-emerald-600 focus:shadow-xl hover:border-b-emerald-500 transition"
+          className="border-b-2 border-emerald-700 bg-transparent text-gray-900 placeholder:text-gray-500 dark:text-gray-200 dark:placeholder:text-gray-400 focus:outline-none focus:border-emerald-600 focus:shadow-xl hover:border-b-emerald-500 transition"
           type="text"
           placeholder="search your todos"
           value={inputValue}

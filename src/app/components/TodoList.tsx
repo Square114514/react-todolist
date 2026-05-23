@@ -32,7 +32,7 @@ export default function TodoList() {
   }, [todos, filter, sortOrder, searchQuery]); // 使用useMemo，依赖变化才重新计算
 
   return (
-    <div className="w-full max-w-2xl bg-amber-50 rounded-2xl shadow-xl p-8 dark:bg-gray-900 transition">
+    <div className="w-full max-w-4xl bg-amber-50 rounded-2xl shadow-xl p-8 dark:bg-gray-900 transition">
       <Title />
       <AddTodo />
       <TodoStats />

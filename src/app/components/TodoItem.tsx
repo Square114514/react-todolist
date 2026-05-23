@@ -8,6 +8,7 @@ interface ItemProps {
 
 function TodoItem({ todo }: ItemProps) {
   const { deleteTodo, editTodo, toggleTodo } = useTodosContext();
+  const priority = todo.priority ?? "medium";
 
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
@@ -23,7 +24,7 @@ function TodoItem({ todo }: ItemProps) {
 
   return (
     <li className="flex mb-3 items-center justify-between bg-white rounded-lg shadow-sm p-3 hover:shadow-lg transition dark:bg-gray-800">
-      <div>
+      <div className="flex justify-between items-center">
         <input
           type="checkbox"
           checked={todo.completed}
@@ -31,7 +32,7 @@ function TodoItem({ todo }: ItemProps) {
         />
         {isEditing ? (
           <input
-            className="dark:text-gray-300 dark:border-b-gray-100 flex-1 px-4 py-3 border-b-2 min-w-80 h-8 border-gray-800 focus:outline-none focus:border-gray-400 focus:shadow-md transition"
+            className="dark:text-gray-300 dark:border-b-gray-100 flex-1 px-4 py-3 border-b-2 min-w-65 h-8 border-gray-800 focus:outline-none focus:border-gray-400 focus:shadow-md transition"
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
             onKeyDown={(e) => {
@@ -44,16 +45,28 @@ function TodoItem({ todo }: ItemProps) {
             autoFocus
           ></input>
         ) : (
-          <span
-            className={`text-lg ${
-              todo.completed
-                ? "line-through text-gray-400"
-                : "text-gray-800 font-medium dark:text-gray-200"
-            }`}
-          >
-            {" "}
-            {todo.text}
-          </span>
+          <div>
+            <span
+              className={`text-lg mx-2 ${
+                todo.completed
+                  ? "line-through text-gray-400"
+                  : "text-gray-800 font-medium dark:text-gray-200"
+              }`}
+            >
+              {todo.text}
+            </span>
+            <span
+              className={` text-xs px-2 py-0.5 rounded-full ${
+                priority === "high"
+                  ? "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
+                  : priority === "medium"
+                    ? "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300"
+                    : "bg-gray-100 text-gray-600 dark:bg-gray-900 dark:text-gray-300"
+              }`}
+            >
+              {priority}
+            </span>
+          </div>
         )}
       </div>
 
