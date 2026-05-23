@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useReducer } from "react";
 import toast from "react-hot-toast";
 import { todosReducer } from "../reducer/todosReducer";
-import Todo from "../types/Todo";
+import Todo, { TodoPriority } from "../types/Todo";
 
 const STORAGE_KEY = "todo_list_data";
 
@@ -31,10 +31,13 @@ export default function useTodos() {
     }
   }, [todos]);
 
-  const addTodo = useCallback((text: string) => {
-    dispatch({ type: "ADD", payload: { text } });
-    toast.success("Todo added");
-  }, []);
+  const addTodo = useCallback(
+    (text: string, priority: TodoPriority = "medium") => {
+      dispatch({ type: "ADD", payload: { text, priority } });
+      toast.success("Todo added");
+    },
+    [],
+  );
 
   const deleteTodo = useCallback((id: string) => {
     dispatch({ type: "DELETE", payload: { id } });

@@ -10,6 +10,7 @@ export function todosReducer(state: Todo[], action: TodoAction): Todo[] {
         text: action.payload.text,
         completed: false,
         createdAt: Date.now(),
+        priority: action.payload.priority ?? "medium", // 默认 medium
       };
       return [newTodo, ...state];
     }
@@ -20,7 +21,11 @@ export function todosReducer(state: Todo[], action: TodoAction): Todo[] {
     case "EDIT":
       return state.map((todo) =>
         todo.id === action.payload.id
-          ? { ...todo, text: action.payload.text }
+          ? {
+              ...todo,
+              text: action.payload.text,
+              priority: action.payload.priority ?? todo.priority,
+            }
           : todo,
       );
 
