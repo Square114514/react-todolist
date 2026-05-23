@@ -19,10 +19,10 @@ export default function TodoList() {
   const PAGE_SIZE = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const handleSearch = useCallback(
-    (searchText: string) => setSearchQuery(searchText.toLowerCase()),
-    [],
-  );
+  const handleSearch = useCallback((searchText: string) => {
+    setSearchQuery(searchText.toLowerCase());
+    setCurrentPage(1);
+  }, []);
 
   const proceededTodos = useMemo(() => {
     return todos // 优化三个链式调用的顺序（原本filter、sort、search
@@ -56,11 +56,15 @@ export default function TodoList() {
       <TodoStats />
       <FilterBar
         currentFilter={filter}
-        onFilterChange={(newFilter) => setFilter(newFilter)}
+        onFilterChange={(newFilter) => {
+          setFilter(newFilter);
+          setCurrentPage(1);
+        }}
         currentSort={sortOrder}
-        onSortChange={() =>
-          setSortOrder((prev) => (prev === "latest" ? "oldest" : "latest"))
-        }
+        onSortChange={() => {
+          setSortOrder((prev) => (prev === "latest" ? "oldest" : "latest"));
+          setCurrentPage(1);
+        }}
         onSearch={handleSearch}
       />
       <List todos={paginatedTodos} />
