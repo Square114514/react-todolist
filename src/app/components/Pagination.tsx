@@ -1,4 +1,4 @@
-interface PaginationProps {
+﻿interface PaginationProps {
   currentPage: number;
   totalPages: number;
   totalItems: number;
@@ -26,6 +26,7 @@ export default function Pagination({
 
       <div className="flex items-center gap-2">
         <button
+          type="button"
           className="rounded-lg px-3 py-1.5 text-sm text-gray-700 transition hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-40 dark:text-gray-300"
           disabled={currentPage <= 1}
           onClick={() => onPageChange(currentPage - 1)}
@@ -36,6 +37,7 @@ export default function Pagination({
           {currentPage} / {totalPages}
         </span>
         <button
+          type="button"
           className="rounded-lg px-3 py-1.5 text-sm text-gray-700 transition hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-40 dark:text-gray-300"
           disabled={currentPage >= totalPages}
           onClick={() => onPageChange(currentPage + 1)}
