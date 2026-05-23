@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useCallback, useMemo, useState } from "react";
 import AddTodo from "./AddTodo";
 import List from "./List";
@@ -7,6 +7,7 @@ import FilterBar from "./FilterBar";
 import Title from "./Title";
 import { FilterType, SortOrder } from "../types/Todo";
 import { useTodosContext } from "../context/TodosContext";
+import Pagination from "./Pagination";
 
 export default function TodoList() {
   const { todos } = useTodosContext();
@@ -14,6 +15,9 @@ export default function TodoList() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("latest");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const PAGE_SIZE = 10;
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleSearch = useCallback(
     (searchText: string) => setSearchQuery(searchText.toLowerCase()),
@@ -36,6 +40,15 @@ export default function TodoList() {
       });
   }, [todos, filter, sortOrder, searchQuery]); // 使用useMemo，依赖变化才重新计算
 
+  const totalPages = Math.max(1, Math.ceil(proceededTodos.length / PAGE_SIZE));
+  const safeCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
+
+  const paginatedTodos = useMemo(() => {
+    const start = (safeCurrentPage - 1) * PAGE_SIZE;
+
+    return proceededTodos.slice(start, start + PAGE_SIZE);
+  }, [safeCurrentPage, proceededTodos]);
+
   return (
     <div className="w-full max-w-4xl bg-amber-50 rounded-2xl shadow-xl p-8 dark:bg-gray-900 transition">
       <Title />
@@ -50,7 +63,14 @@ export default function TodoList() {
         }
         onSearch={handleSearch}
       />
-      <List todos={proceededTodos} />
+      <List todos={paginatedTodos} />
+      <Pagination
+        currentPage={safeCurrentPage}
+        totalPages={totalPages}
+        totalItems={proceededTodos.length}
+        pageSize={PAGE_SIZE}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }
