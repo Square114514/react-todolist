@@ -40,7 +40,7 @@ export default function AddTodo() {
       >
         {priorities.map((p) => (
           <option key={p} value={p}>
-            {p.charAt(0).toUpperCase() + p.slice(1)}
+            {p}
           </option>
         ))}
       </select>

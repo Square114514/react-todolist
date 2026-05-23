@@ -19,20 +19,10 @@ export default function FilterBar({
   const filters: FilterType[] = ["all", "active", "completed"];
   const [inputValue, setInputValue] = useState("");
 
-  const handleSubmit = () => {
-    const text = inputValue.trim();
-
-    if (!text) {
-      onSearch("");
-      return;
-    } // fix: 为空时不再筛选
-
-    onSearch(text);
-  };
-
   useEffect(() => {
+    // 防抖
     const timer = setTimeout(() => {
-      onSearch(inputValue.trim().toLowerCase());
+      onSearch(inputValue.trim());
     }, 300);
 
     return () => clearTimeout(timer);

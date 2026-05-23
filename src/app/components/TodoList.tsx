@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import AddTodo from "./AddTodo";
 import List from "./List";
 import TodoStats from "./TodoStats";
@@ -14,6 +14,11 @@ export default function TodoList() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("latest");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = useCallback(
+    (searchText: string) => setSearchQuery(searchText.toLowerCase()),
+    [],
+  );
 
   const proceededTodos = useMemo(() => {
     return todos // 优化三个链式调用的顺序（原本filter、sort、search
@@ -43,7 +48,7 @@ export default function TodoList() {
         onSortChange={() =>
           setSortOrder((prev) => (prev === "latest" ? "oldest" : "latest"))
         }
-        onSearch={(searchText) => setSearchQuery(searchText.toLowerCase())}
+        onSearch={handleSearch}
       />
       <List todos={proceededTodos} />
     </div>
