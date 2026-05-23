@@ -44,10 +44,13 @@ export default function useTodos() {
     toast.success("Todo deleted");
   }, []);
 
-  const editTodo = useCallback((id: string, newText: string) => {
-    dispatch({ type: "EDIT", payload: { id, text: newText } });
-    toast.success("Todo edited");
-  }, []);
+  const editTodo = useCallback(
+    (id: string, newText: string, priority?: TodoPriority) => {
+      dispatch({ type: "EDIT", payload: { id, text: newText, priority } });
+      toast.success("Todo edited");
+    },
+    [],
+  );
 
   const toggleTodo = useCallback((id: string) => {
     dispatch({ type: "TOGGLE", payload: { id } });

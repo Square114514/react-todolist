@@ -8,7 +8,7 @@ export type TodosContextValue = {
   todos: Todo[];
   addTodo: (text: string, priority?: TodoPriority) => void;
   deleteTodo: (id: string) => void;
-  editTodo: (id: string, newText: string) => void;
+  editTodo: (id: string, newText: string, priority?: TodoPriority) => void;
   toggleTodo: (id: string) => void;
   clearCompleted: () => void;
 };
