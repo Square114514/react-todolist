@@ -4,7 +4,10 @@
   totalItems: number;
   pageSize: number;
   onPageChange: (page: number) => void;
+  onSizeChange: (pageSize: number) => void;
 }
+
+const PAGE_SIZE_OPTIONS = [5, 10, 15] as const;
 
 export default function Pagination({
   currentPage,
@@ -12,6 +15,7 @@ export default function Pagination({
   totalItems,
   pageSize,
   onPageChange,
+  onSizeChange,
 }: PaginationProps) {
   if (totalItems <= pageSize) return null;
 
@@ -19,10 +23,29 @@ export default function Pagination({
   const end = Math.min(currentPage * pageSize, totalItems);
 
   return (
-    <div className="mt-6 flex flex-wrap items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
-      <span className="text-sm text-gray-600 dark:text-gray-400">
-        {start}-{end} / {totalItems}
-      </span>
+    <div className="mt-3 flex flex-wrap items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-gray-600 dark:text-gray-400">
+          {start} - {end} / {totalItems}
+        </span>
+        <select
+          value={pageSize}
+          aria-label="pagesize"
+          className="rounded-md border border-gray-200 bg-white pl-1 py-0.5 text-sm text-gray-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300"
+          onChange={(e) => {
+            onSizeChange(Number(e.target.value)); // 读出来是 string，所以转换成 number
+            onPageChange(1);
+          }}
+        >
+          {PAGE_SIZE_OPTIONS.map((p) => {
+            return (
+              <option key={p} value={p}>
+                {p}
+              </option>
+            );
+          })}
+        </select>
+      </div>
 
       <div className="flex items-center gap-2">
         <button
@@ -31,7 +54,7 @@ export default function Pagination({
           disabled={currentPage <= 1}
           onClick={() => onPageChange(currentPage - 1)}
         >
-          Previous
+          Prev
         </button>
         <span className="text-sm text-gray-600 dark:text-gray-400">
           {currentPage} / {totalPages}

@@ -16,7 +16,7 @@ export default function TodoList() {
   const [sortOrder, setSortOrder] = useState<SortOrder>("latest");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const PAGE_SIZE = 10;
+  const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
   const handleSearch = useCallback((searchText: string) => {
@@ -40,14 +40,14 @@ export default function TodoList() {
       });
   }, [todos, filter, sortOrder, searchQuery]); // 使用useMemo，依赖变化才重新计算
 
-  const totalPages = Math.max(1, Math.ceil(proceededTodos.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(proceededTodos.length / pageSize));
   const safeCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
 
   const paginatedTodos = useMemo(() => {
-    const start = (safeCurrentPage - 1) * PAGE_SIZE;
+    const start = (safeCurrentPage - 1) * pageSize;
 
-    return proceededTodos.slice(start, start + PAGE_SIZE);
-  }, [safeCurrentPage, proceededTodos]);
+    return proceededTodos.slice(start, start + pageSize);
+  }, [safeCurrentPage, proceededTodos, pageSize]);
 
   return (
     <div className="w-full max-w-4xl bg-amber-50 rounded-2xl shadow-xl p-8 dark:bg-gray-900 transition">
@@ -72,8 +72,9 @@ export default function TodoList() {
         currentPage={safeCurrentPage}
         totalPages={totalPages}
         totalItems={proceededTodos.length}
-        pageSize={PAGE_SIZE}
+        pageSize={pageSize}
         onPageChange={setCurrentPage}
+        onSizeChange={setPageSize}
       />
     </div>
   );
